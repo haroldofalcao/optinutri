@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Calculator as CalcIcon, CheckCircle2, XCircle, AlertCircle, Search } from "lucide-react";
+import { Calculator as CalcIcon, CheckCircle2, XCircle, AlertCircle, Search, Pin, PinOff } from "lucide-react";
 import { OptimizationResult } from "@/types/formula";
 import { toast } from "sonner";
 import { useOptimizer } from "@/hooks/useOptimizer";
@@ -35,6 +35,7 @@ export default function Calculator() {
     const [, addToHistory] = useAtom(addOptimizationToHistoryAtom);
     const [result, setResult] = useState<OptimizationResult | null>(null);
     const [selectedFormulas, setSelectedFormulas] = useState<string[]>([]);
+    const [fixedFormulas, setFixedFormulas] = useState<Record<string, number>>({});
     const [searchTerm, setSearchTerm] = useState("");
 
     // Track page view on mount
@@ -71,9 +72,48 @@ export default function Calculator() {
     }, [formulas, searchTerm]);
 
     const toggleFormula = (id: string) => {
-        setSelectedFormulas((prev) =>
-            prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
-        );
+        setSelectedFormulas((prev) => {
+            const isSelected = prev.includes(id);
+            if (isSelected) {
+                // If unselecting, also remove from fixed
+                setFixedFormulas(prev => {
+                    const newFixed = { ...prev };
+                    delete newFixed[id];
+                    return newFixed;
+                });
+                return prev.filter((fid) => fid !== id);
+            } else {
+                return [...prev, id];
+            }
+        });
+    };
+
+    const toggleFixedFormula = (id: string, e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        setFixedFormulas((prev) => {
+            const isFixed = !!prev[id];
+            if (isFixed) {
+                const newFixed = { ...prev };
+                delete newFixed[id];
+                return newFixed;
+            } else {
+                // If fixing, ensure it's also selected
+                if (!selectedFormulas.includes(id)) {
+                    setSelectedFormulas(s => [...s, id]);
+                }
+                return { ...prev, [id]: 1 }; // Default 1 bag
+            }
+        });
+    };
+
+    const updateFixedQuantity = (id: string, value: number) => {
+        if (value < 1) return;
+        setFixedFormulas(prev => ({
+            ...prev,
+            [id]: value
+        }));
     };
 
     const selectAll = () => {
@@ -99,7 +139,7 @@ export default function Calculator() {
         );
 
         const startTime = performance.now();
-        const optimizationResult = optimize(constraints, selectedFormulas);
+        const optimizationResult = optimize(constraints, selectedFormulas, fixedFormulas);
         const executionTime = performance.now() - startTime;
 
         setResult(optimizationResult);
@@ -216,6 +256,30 @@ export default function Calculator() {
                                                 {formula.manufacturer}
                                             </p>
                                         </label>
+                                        {fixedFormulas[formula.id] && (
+                                            <div onClick={(e) => e.preventDefault()} className="w-16 mr-2">
+                                                <Label className="sr-only">Quantidade</Label>
+                                                <Input
+                                                    type="number"
+                                                    min="1"
+                                                    value={fixedFormulas[formula.id]}
+                                                    onChange={(e) => updateFixedQuantity(formula.id, parseInt(e.target.value) || 1)}
+                                                    className="h-8 text-xs pr-1"
+                                                />
+                                            </div>
+                                        )}
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className={`h-8 w-8 ${fixedFormulas[formula.id] ? "text-primary bg-primary/10" : "text-muted-foreground hover:text-primary"}`}
+                                            onClick={(e) => toggleFixedFormula(formula.id, e)}
+                                            title={fixedFormulas[formula.id] ? "Desafixar fórmula" : "Fixar fórmula (Obrigatória)"}
+                                        >
+                                            {fixedFormulas[formula.id] ?
+                                                <Pin className="h-4 w-4 fill-current" /> :
+                                                <PinOff className="h-4 w-4" />
+                                            }
+                                        </Button>
                                     </div>
                                 ))}
                             </div>

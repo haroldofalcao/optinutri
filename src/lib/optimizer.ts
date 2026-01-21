@@ -67,7 +67,8 @@ export class ParenteralNutritionOptimizer {
         selectedFormulas?: string[],
         customCosts?: Record<string, number>,
         emulsionFilter: string = "All",
-        viaFilter: string = "All"
+        viaFilter: string = "All",
+        fixedFormulaIds: string[] | Record<string, number> = []
     ): OptimizationResult {
         // Validate constraints
         if (!this.validateConstraints(constraints)) {
@@ -102,6 +103,29 @@ export class ParenteralNutritionOptimizer {
             modelConstraints.total_bags = { max: constraints.max_bags };
         }
 
+        // Fixed Formulas constraint: force specific formulas to have at least X bags
+        // Normalize fixedFormulaIds to Record<string, number>
+        let fixedMap: Record<string, number> = {};
+        if (Array.isArray(fixedFormulaIds)) {
+            fixedFormulaIds.forEach(id => fixedMap[id] = 1);
+        } else {
+            fixedMap = fixedFormulaIds;
+        }
+
+        const fixedKeys = Object.keys(fixedMap);
+        if (fixedKeys.length > 0) {
+            fixedKeys.forEach(id => {
+                // Ensure the fixed formula is actually available/selected
+                if (availableFormulas.some(f => f.id === id)) {
+                    // Min and Max must be equal to force exact quantity
+                    const quantity = fixedMap[id];
+                    if (quantity > 0) {
+                        modelConstraints[`fixed_${id}`] = { min: quantity, max: quantity };
+                    }
+                }
+            });
+        }
+
         // Build model variables
         this.modelVariables = {};
         for (const formula of availableFormulas) {
@@ -117,6 +141,13 @@ export class ParenteralNutritionOptimizer {
                 fat: (formula.fat_g_l * formula.volume_ml) / 1000,
                 total_bags: 1, // Each unit of this formula counts as 1 bag
             };
+
+            // If this is a fixed formula, add its specific tracker variable so the constraint works
+            // Check if ID is in the keys of our normalized map
+            const fixedQuantity = fixedMap[formula.id];
+            if (fixedQuantity !== undefined) {
+                this.modelVariables[formula.id][`fixed_${formula.id}`] = 1;
+            }
         }
 
         // Build LP model

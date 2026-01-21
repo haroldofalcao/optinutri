@@ -33,7 +33,8 @@ export function useOptimizer(formulas: Formula[]) {
 
     const optimize = useCallback((
         constraints: OptimizationConstraints,
-        selectedFormulaIds: string[]
+        selectedFormulaIds: string[],
+        fixedFormulaIds: string[] | Record<string, number> = []
     ): OptimizationResult => {
         setIsOptimizing(true);
         setValidationErrors([]);
@@ -65,7 +66,7 @@ export function useOptimizer(formulas: Formula[]) {
 
         try {
             // Run optimization synchronously for now (can be async if wrapped in worker)
-            const result = optimizer.optimize(constraints, selectedFormulaIds);
+            const result = optimizer.optimize(constraints, selectedFormulaIds, undefined, "All", "All", fixedFormulaIds);
             setIsOptimizing(false);
             return result;
         } catch (e: any) {
