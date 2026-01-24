@@ -8,11 +8,12 @@ export interface Formula {
     nitrogen_g_l: number;
     glucose_g_l: number;
     fat_g_l: number;
-    emulsion_type: "Soja" | "TCM/TCL" | "SMOF" | "Oliva/TCL" | "Sem lipídio" | string;
-    via: "Central" | "Peripheral";
+    emulsion_type: "Soja" | "TCM/TCL" | "SMOF" | "Oliva/TCL" | "Sem lipídio" | "Enteral" | string;
+    via: "Central" | "Peripheral" | "Enteral";
     base_cost: number;
     current_cost?: number;
     osmolarity?: number;
+    hidden?: boolean;
 }
 
 export interface OptimizationConstraints {

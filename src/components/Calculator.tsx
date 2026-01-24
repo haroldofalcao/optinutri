@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useAtom } from "jotai";
-import { formulasAtom } from "@/store/formulas";
+import { activeFormulasAtom } from "@/store/formulas";
 import { trackPageView, trackOptimizationStarted, trackOptimizationCompleted, trackOptimizationFailed } from "@/lib/analytics";
 import { addOptimizationToHistoryAtom } from "@/store/optimizationHistory";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,7 +31,7 @@ import {
 // Optimization calculator with history and validation
 export default function Calculator() {
     // Safe default initialization of formulas if atom is empty
-    const [formulas] = useAtom(formulasAtom);
+    const [formulas] = useAtom(activeFormulasAtom);
     const [, addToHistory] = useAtom(addOptimizationToHistoryAtom);
     const [result, setResult] = useState<OptimizationResult | null>(null);
     const [selectedFormulas, setSelectedFormulas] = useState<string[]>([]);
@@ -264,6 +264,7 @@ export default function Calculator() {
                                                     min="1"
                                                     value={fixedFormulas[formula.id]}
                                                     onChange={(e) => updateFixedQuantity(formula.id, parseInt(e.target.value) || 1)}
+                                                    onFocus={(e) => e.target.select()}
                                                     className="h-8 text-xs pr-1"
                                                 />
                                             </div>
@@ -311,6 +312,7 @@ export default function Calculator() {
                                                 onChange={(e) =>
                                                     setConstraints({ ...constraints, max_bags: Number(e.target.value) })
                                                 }
+                                                onFocus={(e) => e.target.select()}
                                                 className={getFieldError("max_bags") ? "border-destructive" : ""}
                                             />
                                         </TooltipTrigger>
@@ -336,6 +338,7 @@ export default function Calculator() {
                                                 onChange={(e) =>
                                                     setConstraints({ ...constraints, kcal_min: Number(e.target.value) })
                                                 }
+                                                onFocus={(e) => e.target.select()}
                                                 className={getFieldError("kcal_min") ? "border-destructive" : ""}
                                             />
                                         </div>
@@ -347,6 +350,7 @@ export default function Calculator() {
                                                 onChange={(e) =>
                                                     setConstraints({ ...constraints, kcal_max: Number(e.target.value) })
                                                 }
+                                                onFocus={(e) => e.target.select()}
                                                 className={getFieldError("kcal_max") ? "border-destructive" : ""}
                                             />
                                         </div>
@@ -364,6 +368,7 @@ export default function Calculator() {
                                                 onChange={(e) =>
                                                     setConstraints({ ...constraints, protein_min: Number(e.target.value) })
                                                 }
+                                                onFocus={(e) => e.target.select()}
                                                 className={getFieldError("protein_min") ? "border-destructive" : ""}
                                             />
                                         </div>
@@ -375,6 +380,7 @@ export default function Calculator() {
                                                 onChange={(e) =>
                                                     setConstraints({ ...constraints, protein_max: Number(e.target.value) })
                                                 }
+                                                onFocus={(e) => e.target.select()}
                                                 className={getFieldError("protein_max") ? "border-destructive" : ""}
                                             />
                                         </div>
@@ -389,6 +395,7 @@ export default function Calculator() {
                                         onChange={(e) =>
                                             setConstraints({ ...constraints, volume_max: Number(e.target.value) })
                                         }
+                                        onFocus={(e) => e.target.select()}
                                         className={getFieldError("volume_max") ? "border-destructive" : ""}
                                     />
                                 </div>
