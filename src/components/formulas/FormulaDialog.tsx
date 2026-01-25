@@ -41,7 +41,7 @@ const formulaSchema = z.object({
     emulsion_type: z.string().min(1, "Tipo de emulsão é obrigatório"),
     via: z.enum(["Central", "Peripheral", "Enteral"]),
     base_cost: z.coerce.number().positive("Custo deve ser positivo"),
-    osmolarity: z.coerce.number().min(0, "Osmolaridade deve ser maior ou igual a 0").optional(),
+    osmolarity: z.coerce.number().min(0, "Osmolaridade deve ser maior ou igual a 0").default(0),
 });
 
 type FormulaFormValues = z.infer<typeof formulaSchema>;
@@ -60,7 +60,7 @@ export function FormulaDialog({
     onSave,
 }: FormulaDialogProps) {
     const form = useForm<FormulaFormValues>({
-        resolver: zodResolver(formulaSchema),
+        resolver: zodResolver(formulaSchema) as any,
         defaultValues: {
             name: "",
             manufacturer: "",
@@ -91,7 +91,7 @@ export function FormulaDialog({
                 emulsion_type: formula.emulsion_type,
                 via: formula.via,
                 base_cost: formula.base_cost,
-                osmolarity: formula.osmolarity || 0,
+                osmolarity: formula.osmolarity ?? 0,
             });
         } else {
             form.reset({
