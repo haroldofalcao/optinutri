@@ -27,6 +27,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from "recharts";
+import { NutrientRange } from "./NutrientRange";
 
 // Optimization calculator with history and validation
 export default function Calculator() {
@@ -423,13 +424,13 @@ export default function Calculator() {
                                 <div className="flex items-center gap-2 mt-2">
                                     {result.status === "Optimal" ? (
                                         <>
-                                            <CheckCircle2 className="h-4 w-4 text-success" />
-                                            <span className="text-green-600">Solução ótima encontrada</span>
+                                            <CheckCircle2 className="h-4 w-4 text-green-600" />
+                                            <span className="text-green-600 font-medium">Solução ótima encontrada</span>
                                         </>
                                     ) : (
                                         <>
                                             <XCircle className="h-4 w-4 text-destructive" />
-                                            <span className="text-destructive">{result.message}</span>
+                                            <span className="text-destructive font-medium">{result.message}</span>
                                         </>
                                     )}
                                 </div>
@@ -440,64 +441,74 @@ export default function Calculator() {
                     </CardHeader>
                     <CardContent>
                         {result && result.status === "Optimal" ? (
-                            <div className="space-y-6">
+                            <div className="space-y-8">
+                                {/* KPI Cards */}
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Custo Total</p>
-                                        <p className="text-2xl font-bold text-primary">
-                                            R$ {result.total_cost?.toFixed(2)}
+                                    <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 flex flex-col items-center text-center">
+                                        <p className="text-sm font-medium text-muted-foreground">Custo Total</p>
+                                        <div className="mt-2 flex items-baseline justify-center">
+                                            <span className="text-3xl font-bold tracking-tight text-primary">
+                                                R$ {result.total_cost?.toFixed(2)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 flex flex-col items-center text-center">
+                                        <p className="text-sm font-medium text-muted-foreground">Total de Bolsas</p>
+                                        <div className="mt-2 flex items-baseline justify-center">
+                                            <span className="text-3xl font-bold tracking-tight">
+                                                {result.num_bags}
+                                            </span>
+                                            <span className="ml-1 text-sm text-muted-foreground">unid.</span>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground mt-1">
+                                            Max: {constraints.max_bags}
                                         </p>
                                     </div>
-                                    <div className="space-y-1">
-                                        <p className="text-sm text-muted-foreground">Número de Bolsas</p>
-                                        <p className="text-2xl font-bold">{result.num_bags}</p>
-                                    </div>
                                 </div>
 
+                                {/* Nutrient Ranges */}
+                                <div className="space-y-4 rounded-lg border p-4 bg-muted/20">
+                                    <h4 className="text-sm font-semibold mb-3">Conformidade Nutricional</h4>
+                                    <NutrientRange
+                                        label="Calorias"
+                                        value={result.total_kcal}
+                                        min={constraints.kcal_min}
+                                        max={constraints.kcal_max}
+                                        unit="kcal"
+                                    />
+                                    <NutrientRange
+                                        label="Proteína"
+                                        value={result.total_protein}
+                                        min={constraints.protein_min}
+                                        max={constraints.protein_max}
+                                        unit="g"
+                                    />
+                                    <NutrientRange
+                                        label="Volume"
+                                        value={result.total_volume}
+                                        max={constraints.volume_max}
+                                        unit="mL"
+                                    />
+                                </div>
+
+                                {/* Selected Formulas */}
                                 <div className="space-y-3">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm">Calorias</span>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-sm font-medium">
-                                                {result.total_kcal.toFixed(0)} kcal
-                                            </span>
-                                            {result.constraints_met.kcal_min && result.constraints_met.kcal_max ? (
-                                                <CheckCircle2 className="h-4 w-4 text-green-600" />
-                                            ) : (
-                                                <AlertCircle className="h-4 w-4 text-yellow-500" />
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm">Proteína</span>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-sm font-medium">
-                                                {result.total_protein.toFixed(1)} g
-                                            </span>
-                                            {result.constraints_met.protein_min && result.constraints_met.protein_max ? (
-                                                <CheckCircle2 className="h-4 w-4 text-green-600" />
-                                            ) : (
-                                                <AlertCircle className="h-4 w-4 text-yellow-500" />
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-2">
                                     <p className="text-sm font-medium">Fórmulas Selecionadas</p>
                                     <div className="space-y-2">
                                         {result.selected_bags.map((bag) => (
                                             <div
                                                 key={bag.formula_id}
-                                                className="flex items-center justify-between rounded-lg border p-3"
+                                                className="flex items-center justify-between rounded-lg border p-3 hover:bg-accent/50 transition-colors"
                                             >
                                                 <div className="space-y-1">
-                                                    <p className="text-sm font-medium">{bag.name}</p>
-                                                    <div className="flex gap-2">
-                                                        <Badge variant="outline" className="text-xs">
-                                                            {bag.quantity}x
+                                                    <div className="flex items-center gap-2">
+                                                        <Badge variant="outline" className="h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-primary/10 text-primary border-primary/20">
+                                                            {bag.quantity}
                                                         </Badge>
-                                                        <Badge variant="secondary" className="text-xs">
+                                                        <p className="text-sm font-medium">{bag.name}</p>
+                                                    </div>
+                                                    <div className="flex gap-2 pl-7">
+                                                        <Badge variant="secondary" className="text-[10px] h-4">
                                                             {bag.via}
                                                         </Badge>
                                                     </div>
@@ -509,10 +520,11 @@ export default function Calculator() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="flex h-64 items-center justify-center text-muted-foreground">
-                                <div className="text-center">
-                                    <CalcIcon className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                                    <p>Ainda sem resultados</p>
+                            <div className="flex h-64 items-center justify-center text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
+                                <div className="text-center p-6">
+                                    <CalcIcon className="mx-auto h-12 w-12 mb-4 opacity-20" />
+                                    <p className="font-medium">Nenhum resultado ainda</p>
+                                    <p className="text-xs mt-1">Defina restrições e clique em Otimizar</p>
                                 </div>
                             </div>
                         )}
@@ -555,8 +567,8 @@ export default function Calculator() {
                                     <YAxis />
                                     <RechartsTooltip content={<CustomTooltip />} />
                                     <Legend />
-                                    <Bar dataKey="value" fill="hsl(var(--primary))" name="Alcançado" />
-                                    <Bar dataKey="target" fill="hsl(var(--muted))" name="Alvo" />
+                                    <Bar dataKey="value" fill="hsl(var(--primary))" name="Alcançado" radius={[4, 4, 0, 0]} />
+                                    <Bar dataKey="target" fill="#94a3b8" name="Alvo" radius={[4, 4, 0, 0]} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </CardContent>
