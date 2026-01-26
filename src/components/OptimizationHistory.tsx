@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useAtom } from "jotai";
-import { optimizationHistoryAtom, deleteOptimizationEntryAtom, clearOptimizationHistoryAtom, OptimizationHistoryEntry } from "@/store/optimizationHistory";
+import { useHistory } from "@/hooks/useHistory";
+import { OptimizationHistoryEntry } from "@/store/optimizationHistory";
 import { trackOptimizationDetailsViewed } from "@/lib/analytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,31 +29,36 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 export function OptimizationHistory() {
-    const [history] = useAtom(optimizationHistoryAtom);
-    const [, deleteEntry] = useAtom(deleteOptimizationEntryAtom);
-    const [, clearHistory] = useAtom(clearOptimizationHistoryAtom);
+    // Persistence Hook
+    const { history, loading } = useHistory();
     const [selectedEntry, setSelectedEntry] = useState<OptimizationHistoryEntry | null>(null);
     const [detailsOpen, setDetailsOpen] = useState(false);
 
+    // TODO: Implement delete in persistence layer
     const handleDelete = (id: string) => {
-        deleteEntry(id);
-        toast.success("Entrada removida do histórico");
+        toast.error("Exclusão ainda não implementada no banco de dados.");
     };
 
     const handleClearAll = () => {
-        clearHistory();
-        toast.success("Histórico limpo");
+        toast.error("Limpeza de histórico ainda não implementada no banco de dados.");
     };
 
-    const handleViewDetails = (entry: OptimizationHistoryEntry) => {
-        setSelectedEntry(entry);
+    const handleViewDetails = (entry: any) => { // Using any broadly due to timestamp/data types mismatch between local/service
+        const convertedEntry: OptimizationHistoryEntry = {
+            ...entry,
+            timestamp: entry.timestamp?.seconds ? entry.timestamp.seconds * 1000 : Date.now(), // Handle Firestore Timestamp
+        };
+        setSelectedEntry(convertedEntry);
         setDetailsOpen(true);
         // Track details view
-        trackOptimizationDetailsViewed(entry.id, true);
+        trackOptimizationDetailsViewed(entry.id || "unknown", true);
     };
 
-    const formatDate = (timestamp: number) => {
-        return new Date(timestamp).toLocaleString("pt-BR", {
+    const formatDate = (timestamp: any) => {
+        if (!timestamp) return "-";
+        // Handle Firestore Timestamp (seconds) or JS Date number
+        const date = timestamp.seconds ? new Date(timestamp.seconds * 1000) : new Date(timestamp);
+        return date.toLocaleString("pt-BR", {
             day: "2-digit",
             month: "2-digit",
             year: "numeric",
@@ -61,6 +66,21 @@ export function OptimizationHistory() {
             minute: "2-digit",
         });
     };
+
+    if (loading) {
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Histórico de Otimizações</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex h-32 items-center justify-center text-muted-foreground">
+                        <p>Carregando histórico...</p>
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    }
 
     if (history.length === 0) {
         return (
@@ -93,28 +113,7 @@ export function OptimizationHistory() {
                             {history.length} otimização{history.length !== 1 ? "ões" : ""} realizada{history.length !== 1 ? "s" : ""}
                         </CardDescription>
                     </div>
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button variant="destructive" size="sm">
-                                <Trash className="mr-2 h-4 w-4" />
-                                Limpar Histórico
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Confirmar limpeza</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    Tem certeza que deseja limpar todo o histórico? Esta ação não pode ser desfeita.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleClearAll}>
-                                    Limpar
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
+                    {/* Delete/Clear buttons disabled for MVP persistence until implemented in service */}
                 </div>
             </CardHeader>
             <CardContent>
@@ -192,14 +191,6 @@ export function OptimizationHistory() {
                                                 title="Ver detalhes"
                                             >
                                                 <Eye className="h-4 w-4" />
-                                            </Button>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                onClick={() => handleDelete(entry.id)}
-                                                title="Excluir"
-                                            >
-                                                <Trash2 className="h-4 w-4 text-destructive" />
                                             </Button>
                                         </div>
                                     </TableCell>

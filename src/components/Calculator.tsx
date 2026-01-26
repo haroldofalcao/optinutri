@@ -15,6 +15,7 @@ import { Calculator as CalcIcon, CheckCircle2, XCircle, AlertCircle, Search, Pin
 import { OptimizationResult } from "@/types/formula";
 import { toast } from "sonner";
 import { useOptimizer } from "@/hooks/useOptimizer";
+import { useHistory } from "@/hooks/useHistory";
 import { OptimizationHistory } from "@/components/OptimizationHistory";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
@@ -127,7 +128,9 @@ export default function Calculator() {
         setSelectedFormulas([]);
     };
 
-    const handleOptimize = () => {
+    const { saveResult, user } = useHistory();
+
+    const handleOptimize = async () => {
         if (selectedFormulas.length === 0) {
             toast.error("Selecione ao menos uma fórmula para otimizar");
             return;
@@ -145,21 +148,30 @@ export default function Calculator() {
 
         setResult(optimizationResult);
 
-        // Add to history
-        addToHistory({
-            constraints,
-            result: optimizationResult,
-            selectedFormulas,
-        });
-
         if (optimizationResult.status === "Optimal") {
+            // Save to Persistence (Firestore)
+            // We await this but don't block the UI showing the result
+            saveResult({
+                constraints: constraints,
+                result: optimizationResult,
+                selectedFormulas,
+            });
+
+            // Add to legacy local atom (optional, keeping for now)
+            addToHistory({
+                constraints,
+                result: optimizationResult,
+                selectedFormulas,
+            });
+
             trackOptimizationCompleted(
                 optimizationResult.num_bags,
                 optimizationResult.total_cost || 0,
                 executionTime,
                 optimizationResult.total_volume
             );
-            toast.success("Otimização concluída com sucesso!");
+            // toast success handled in saveResult or here? saveResult has it.
+            // keeping concise to avoid duplicate toasts if saveResult has one.
         } else {
             trackOptimizationFailed(
                 optimizationResult.message || "Erro na otimização",
