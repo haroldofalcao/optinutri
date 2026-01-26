@@ -1455,6 +1455,76 @@
       "emulsion_type": "Enteral",
       "via": "Enteral",
       "base_cost": 140
+    },
+    {
+      "id": "F105",
+      "name": "SMOF Lipid 20% 500mL",
+      "manufacturer": "Fresenius Kabi",
+      "volume_ml": 500,
+      "kcal": 1000,
+      "protein_g_l": 0,
+      "nitrogen_g_l": 0,
+      "glucose_g_l": 0,
+      "fat_g_l": 200,
+      "emulsion_type": "Parenteral (Lipídica)",
+      "via": "Parenteral",
+      "base_cost": 220
+    },
+    {
+      "id": "F106",
+      "name": "SMOF Lipid 20% 100mL",
+      "manufacturer": "Fresenius Kabi",
+      "volume_ml": 100,
+      "kcal": 200,
+      "protein_g_l": 0,
+      "nitrogen_g_l": 0,
+      "glucose_g_l": 0,
+      "fat_g_l": 200,
+      "emulsion_type": "Parenteral (Lipídica)",
+      "via": "Parenteral",
+      "base_cost": 115
+    },
+    {
+      "id": "F107",
+      "name": "Aminoven 10% Infant 250mL",
+      "manufacturer": "Fresenius Kabi",
+      "volume_ml": 250,
+      "kcal": 100,
+      "protein_g_l": 100,
+      "nitrogen_g_l": 16.2,
+      "glucose_g_l": 0,
+      "fat_g_l": 0,
+      "emulsion_type": "Parenteral (Aminoácidos)",
+      "via": "Parenteral",
+      "base_cost": 165
+    },
+    {
+      "id": "F108",
+      "name": "Aminoven 15% Adult 500mL",
+      "manufacturer": "Fresenius Kabi",
+      "volume_ml": 500,
+      "kcal": 300,
+      "protein_g_l": 150,
+      "nitrogen_g_l": 25.7,
+      "glucose_g_l": 0,
+      "fat_g_l": 0,
+      "emulsion_type": "Parenteral (Aminoácidos)",
+      "via": "Parenteral",
+      "base_cost": 245
+    },
+    {
+      "id": "F109",
+      "name": "Primene 10% 250mL",
+      "manufacturer": "Baxter",
+      "volume_ml": 250,
+      "kcal": 100,
+      "protein_g_l": 100,
+      "nitrogen_g_l": 15,
+      "glucose_g_l": 0,
+      "fat_g_l": 0,
+      "emulsion_type": "Parenteral (Aminoácidos)",
+      "via": "Parenteral",
+      "base_cost": 185
     }
   ]
 }
