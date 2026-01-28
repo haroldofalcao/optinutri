@@ -59,4 +59,11 @@ export interface OptimizationResult {
         volume_max: boolean;
     };
     num_bags: number;
+    violation_details?: {
+        constraint: string;
+        target: number;
+        actual_min: number;
+        actual_max: number;
+        unit: string;
+    }[];
 }
