@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FlaskConical, Calculator, TrendingDown, Package, BookOpen, ArrowRight } from "lucide-react";
+import { FlaskConical, Calculator, TrendingDown, Activity, Droplets, Utensils, BookOpen, ArrowRight } from "lucide-react";
 import { useAtom } from "jotai";
 import { activeFormulasAtom } from "@/store/formulas";
 import { Button } from "@/components/ui/button";
@@ -29,24 +29,24 @@ export default function Dashboard() {
         {
             title: "Parenteral (Central)",
             value: formulas.filter((f) => f.via === "Central").length,
-            icon: Package,
-            description: "Nutrição Parenteral",
+            icon: Activity,
+            description: "Acesso Venoso Central",
             color: "text-blue-500",
             bg: "bg-blue-500/10",
         },
         {
             title: "Parenteral (Periférica)",
             value: formulas.filter((f) => f.via === "Peripheral").length,
-            icon: Package,
-            description: "Nutrição Parenteral",
+            icon: Droplets,
+            description: "Acesso Venoso Periférico",
             color: "text-emerald-500",
             bg: "bg-emerald-500/10",
         },
         {
             title: "Nutrição Enteral",
             value: formulas.filter((f) => f.via === "Enteral").length,
-            icon: Package,
-            description: "Fórmulas Enterais",
+            icon: Utensils,
+            description: "Via Digestiva",
             color: "text-orange-500",
             bg: "bg-orange-500/10",
         },
