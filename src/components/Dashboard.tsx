@@ -65,10 +65,10 @@ export default function Dashboard() {
                         Sistema Operacional v1.2
                     </div>
                     <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-                        Otimizador de Nutrição Parenteral
+                        Otimizador de Terapia Nutricional
                     </h1>
                     <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 leading-relaxed font-light">
-                        Maximize a eficácia clínica e minimize custos com nossa tecnologia avançada de otimização de fórmulas.
+                        Maximize a eficácia clínica e minimize custos com nossa tecnologia avançada de otimização de fórmulas enterais e parenterais.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
                         <Button
