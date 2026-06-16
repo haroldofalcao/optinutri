@@ -266,7 +266,7 @@ export function CalculatorForm({
                         </div>
                     </TooltipProvider>
 
-                    <div className="mt-8">
+                    <div className="mt-8 space-y-2">
                         <Button
                             onClick={handleOptimize}
                             size="lg"
@@ -282,6 +282,11 @@ export function CalculatorForm({
                                 </>
                             )}
                         </Button>
+                        {selectedFormulas.length === 0 && (
+                            <p className="text-xs text-center text-muted-foreground">
+                                Selecione ao menos uma fórmula acima para habilitar o cálculo.
+                            </p>
+                        )}
                     </div>
                 </CardContent>
             </Card>
