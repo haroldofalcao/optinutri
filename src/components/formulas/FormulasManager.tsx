@@ -329,62 +329,102 @@ export default function FormulasManager() {
                             <p>Nenhuma fórmula encontrada.</p>
                         </div>
                     ) : (
-                        <div className="rounded-md border">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Nome</TableHead>
-                                        <TableHead>Fabricante</TableHead>
-                                        <TableHead>Via</TableHead>
-                                        <TableHead>Tipo</TableHead>
-                                        <TableHead className="text-right">Vol (mL)</TableHead>
-                                        <TableHead className="text-right">Kcal</TableHead>
-                                        <TableHead className="text-right">Ptn (g)</TableHead>
-                                        <TableHead className="text-right">Custo (R$)</TableHead>
-                                        <TableHead className="text-right">Ações</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {filteredFormulas.map((formula) => (
-                                        <TableRow key={formula.id}>
-                                            <TableCell className="font-medium">{formula.name}</TableCell>
-                                            <TableCell>{formula.manufacturer}</TableCell>
-                                            <TableCell>
+                        <>
+                            {/* Mobile card list — visible only below sm breakpoint */}
+                            <div className="sm:hidden space-y-2">
+                                {filteredFormulas.map((formula) => (
+                                    <div key={formula.id} className="flex items-center justify-between p-3 rounded-lg border bg-card gap-2">
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-2 flex-wrap">
+                                                <span className="font-medium text-sm truncate">{formula.name}</span>
                                                 <Badge
                                                     variant={formula.via === "Central" ? "default" : (formula.via === "Enteral" ? "outline" : "secondary")}
+                                                    className="text-[10px] shrink-0"
                                                 >
                                                     {formula.via}
                                                 </Badge>
-                                            </TableCell>
-                                            <TableCell className="text-xs text-muted-foreground">{formula.emulsion_type}</TableCell>
-                                            <TableCell className="text-right">{formula.volume_ml}</TableCell>
-                                            <TableCell className="text-right">{formula.kcal}</TableCell>
-                                            <TableCell className="text-right">
-                                                {(formula.protein_g_l * formula.volume_ml / 1000).toFixed(1)}
-                                            </TableCell>
-                                            <TableCell className="text-right font-medium">
-                                                R$ {formula.base_cost.toFixed(2)}
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <div className="flex justify-end gap-1">
-                                                    <Button size="icon" variant="ghost" onClick={() => handleEdit(formula)}>
-                                                        <Pencil className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button
-                                                        size="icon"
-                                                        variant="ghost"
-                                                        className="text-destructive hover:text-destructive"
-                                                        onClick={() => handleDeleteClick(formula.id)}
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </TableCell>
+                                            </div>
+                                            <div className="flex items-center gap-1.5 mt-0.5">
+                                                <span className="text-xs text-muted-foreground truncate">{formula.manufacturer}</span>
+                                                <span className="text-xs text-muted-foreground">·</span>
+                                                <span className="text-xs font-semibold text-foreground shrink-0">R$ {formula.base_cost.toFixed(2)}</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-1 shrink-0">
+                                            <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleEdit(formula)}>
+                                                <Pencil className="h-3.5 w-3.5" />
+                                            </Button>
+                                            <Button
+                                                size="icon"
+                                                variant="ghost"
+                                                className="h-8 w-8 text-destructive hover:text-destructive"
+                                                onClick={() => handleDeleteClick(formula.id)}
+                                            >
+                                                <Trash2 className="h-3.5 w-3.5" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Desktop/tablet table — hidden on mobile */}
+                            <div className="hidden sm:block rounded-md border">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Nome</TableHead>
+                                            <TableHead>Fabricante</TableHead>
+                                            <TableHead>Via</TableHead>
+                                            <TableHead>Tipo</TableHead>
+                                            <TableHead className="text-right">Vol (mL)</TableHead>
+                                            <TableHead className="text-right">Kcal</TableHead>
+                                            <TableHead className="text-right">Ptn (g)</TableHead>
+                                            <TableHead className="text-right">Custo (R$)</TableHead>
+                                            <TableHead className="text-right">Ações</TableHead>
                                         </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </div>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {filteredFormulas.map((formula) => (
+                                            <TableRow key={formula.id}>
+                                                <TableCell className="font-medium">{formula.name}</TableCell>
+                                                <TableCell>{formula.manufacturer}</TableCell>
+                                                <TableCell>
+                                                    <Badge
+                                                        variant={formula.via === "Central" ? "default" : (formula.via === "Enteral" ? "outline" : "secondary")}
+                                                    >
+                                                        {formula.via}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="text-xs text-muted-foreground">{formula.emulsion_type}</TableCell>
+                                                <TableCell className="text-right">{formula.volume_ml}</TableCell>
+                                                <TableCell className="text-right">{formula.kcal}</TableCell>
+                                                <TableCell className="text-right">
+                                                    {(formula.protein_g_l * formula.volume_ml / 1000).toFixed(1)}
+                                                </TableCell>
+                                                <TableCell className="text-right font-medium">
+                                                    R$ {formula.base_cost.toFixed(2)}
+                                                </TableCell>
+                                                <TableCell className="text-right">
+                                                    <div className="flex justify-end gap-1">
+                                                        <Button size="icon" variant="ghost" onClick={() => handleEdit(formula)}>
+                                                            <Pencil className="h-4 w-4" />
+                                                        </Button>
+                                                        <Button
+                                                            size="icon"
+                                                            variant="ghost"
+                                                            className="text-destructive hover:text-destructive"
+                                                            onClick={() => handleDeleteClick(formula.id)}
+                                                        >
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        </>
                     )}
                 </CardContent>
             </Card>
