@@ -37,16 +37,18 @@ const mockFormulas: Formula[] = [
 describe('Infeasibility Analysis', () => {
     const optimizer = new ParenteralNutritionOptimizer(mockFormulas);
 
-    it('should identify impossible minimum calories given bag limit', () => {
-        // With 1 bag max:
-        // Max Kcal possible is 800 (Formula B)
-        // We request Min 2000
+    it('should identify impossible minimum calories given type limit', () => {
+        // max_bags limits DISTINCT FORMULA TYPES, not physical bag count
+        // (volume per type is continuous, capped only by volume_max).
+        // With 1 type max and volume_max 1000mL:
+        // Max Kcal possible is 1000 (Formula A: 1 kcal/mL * 1000mL)
+        // We request Min 1500
         const constraints: OptimizationConstraints = {
-            kcal_min: 2000,
+            kcal_min: 1500,
             kcal_max: 3000,
             protein_min: 0,
             protein_max: 1000,
-            volume_max: 5000,
+            volume_max: 1000,
             max_bags: 1
         };
 
@@ -55,20 +57,20 @@ describe('Infeasibility Analysis', () => {
         expect(result.status).toBe("Infeasible");
         expect(result.violation_details).toBeDefined();
         expect(result.violation_details?.some(v => v.constraint === "Calorias Mínimas")).toBe(true);
-        // Should show that max feasible is 800
+        // Should show that max feasible is 1000
         const violation = result.violation_details?.find(v => v.constraint === "Calorias Mínimas");
-        expect(violation?.actual_max).toBe(800);
+        expect(violation?.actual_max).toBe(1000);
     });
 
-    it('should identify impossible minimum protein given bag limit', () => {
-        // Max Protein with 1 bag is 40g (Formula B).
-        // Requests 50g.
+    it('should identify impossible minimum protein given type limit', () => {
+        // Max Protein with 1 type and volume_max 1000mL is 50g
+        // (Formula A: 0.05 g/mL * 1000mL). Requests 60g.
         const constraints: OptimizationConstraints = {
             kcal_min: 0,
             kcal_max: 5000,
-            protein_min: 50,
+            protein_min: 60,
             protein_max: 1000,
-            volume_max: 5000,
+            volume_max: 1000,
             max_bags: 1
         };
 
@@ -78,6 +80,6 @@ describe('Infeasibility Analysis', () => {
         expect(result.violation_details?.some(v => v.constraint === "Proteína Mínima")).toBe(true);
 
         const violation = result.violation_details?.find(v => v.constraint === "Proteína Mínima");
-        expect(violation?.actual_max).toBe(40);
+        expect(violation?.actual_max).toBe(50);
     });
 });
