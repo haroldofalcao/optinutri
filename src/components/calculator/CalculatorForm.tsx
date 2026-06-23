@@ -34,6 +34,7 @@ interface CalculatorFormProps {
     searchTerm: string;
     setSearchTerm: (term: string) => void;
     getFieldError: (field: string) => string | undefined;
+    hasValidationErrors: boolean;
 }
 
 export function CalculatorForm({
@@ -52,6 +53,7 @@ export function CalculatorForm({
     searchTerm,
     setSearchTerm,
     getFieldError,
+    hasValidationErrors,
 }: CalculatorFormProps) {
 
     const filteredFormulas = formulas.filter((f) => {
@@ -271,7 +273,7 @@ export function CalculatorForm({
                             onClick={handleOptimize}
                             size="lg"
                             className="w-full h-12 text-lg font-bold shadow-xl hover:shadow-2xl transition-all hover:-translate-y-0.5"
-                            disabled={selectedFormulas.length === 0 || isOptimizing}
+                            disabled={selectedFormulas.length === 0 || isOptimizing || hasValidationErrors}
                         >
                             {isOptimizing ? (
                                 <>Calculando...</>
