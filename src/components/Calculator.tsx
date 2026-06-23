@@ -37,7 +37,11 @@ export default function Calculator() {
         max_bags: 5,
     });
 
-    const { optimize, isOptimizing, validationErrors } = useOptimizer(formulas || []);
+    const { optimize, isOptimizing, validationErrors, validate } = useOptimizer(formulas || []);
+
+    useEffect(() => {
+        validate(constraints);
+    }, [constraints, validate]);
 
     const getFieldError = (field: string) => {
         return validationErrors.find((e) => e.field === field)?.message;
@@ -169,6 +173,7 @@ export default function Calculator() {
                         searchTerm={searchTerm}
                         setSearchTerm={setSearchTerm}
                         getFieldError={getFieldError}
+                        hasValidationErrors={validationErrors.length > 0}
                     />
                 </div>
 

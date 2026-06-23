@@ -10,6 +10,19 @@ interface CalculatorResultsProps {
     constraints: any;
 }
 
+function getSuggestion(violation: { constraint: string; target: number; actual_min: number; actual_max: number; unit: string }): string {
+    const isMinConstraint = violation.constraint.includes("Mínima");
+    const isMaxConstraint = violation.constraint.includes("Máxima");
+
+    if (isMinConstraint) {
+        return `Reduza a meta mínima para até ${violation.actual_max.toFixed(0)} ${violation.unit}, ou aumente o "Mix Máximo de Fórmulas" / Volume Máx para liberar mais combinações.`;
+    }
+    if (isMaxConstraint) {
+        return `Aumente a meta máxima para ao menos ${violation.actual_min.toFixed(0)} ${violation.unit}, ou ajuste o volume/fórmulas selecionadas.`;
+    }
+    return `Ajuste o volume máximo para ao menos ${violation.actual_min.toFixed(0)} ${violation.unit}.`;
+}
+
 export function CalculatorResults({ result, constraints }: CalculatorResultsProps) {
     if (!result) {
         return (
@@ -147,7 +160,7 @@ export function CalculatorResults({ result, constraints }: CalculatorResultsProp
                             <div className="space-y-1">
                                 <p className="font-bold text-lg text-destructive">Otimização Impossível</p>
                                 <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-                                    Não foi possível encontrar uma combinação dentro da restrição de <span className="font-mono font-bold text-foreground">Max {constraints.max_bags} bolsas</span>.
+                                    Nenhuma combinação das fórmulas selecionadas atende a todas as restrições nutricionais definidas.
                                 </p>
                             </div>
                         </div>
@@ -167,6 +180,9 @@ export function CalculatorResults({ result, constraints }: CalculatorResultsProp
                                         <span>Intervalo alcançável com as fórmulas atuais:</span>
                                         <span className="font-mono font-medium text-foreground">{violation.actual_min.toFixed(0)} - {violation.actual_max.toFixed(0)} {violation.unit}</span>
                                     </div>
+                                    <p className="text-xs text-muted-foreground mt-2 pt-2 border-t border-border/30">
+                                        💡 {getSuggestion(violation)}
+                                    </p>
                                 </div>
                             ))}
                         </div>
