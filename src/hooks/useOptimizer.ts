@@ -8,28 +8,33 @@ export interface ValidationError {
     field?: string;
 }
 
+export function validateConstraints(constraints: OptimizationConstraints): ValidationError[] {
+    const errors: ValidationError[] = [];
+
+    if (constraints.kcal_min < 0) errors.push({ path: ["kcal_min"], message: "Valor não pode ser negativo", field: "kcal_min" });
+    if (constraints.kcal_max < constraints.kcal_min) errors.push({ path: ["kcal_max"], message: "Máximo deve ser maior que mínimo", field: "kcal_max" });
+
+    if (constraints.protein_min < 0) errors.push({ path: ["protein_min"], message: "Valor não pode ser negativo", field: "protein_min" });
+    if (constraints.protein_max < constraints.protein_min) errors.push({ path: ["protein_max"], message: "Máximo deve ser maior que mínimo", field: "protein_max" });
+
+    if (constraints.volume_max <= 0) errors.push({ path: ["volume_max"], message: "Volume deve ser maior que zero", field: "volume_max" });
+
+    if (constraints.max_bags !== undefined && constraints.max_bags < 1) errors.push({ path: ["max_bags"], message: "Mínimo 1 bolsa", field: "max_bags" });
+
+    return errors;
+}
+
 export function useOptimizer(formulas: Formula[]) {
     const [isOptimizing, setIsOptimizing] = useState(false);
     const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
 
     const optimizer = new ParenteralNutritionOptimizer(formulas);
 
-    const validate = (constraints: OptimizationConstraints) => {
-        const errors: ValidationError[] = [];
-
-        if (constraints.kcal_min < 0) errors.push({ path: ["kcal_min"], message: "Valor não pode ser negativo", field: "kcal_min" });
-        if (constraints.kcal_max < constraints.kcal_min) errors.push({ path: ["kcal_max"], message: "Máximo deve ser maior que mínimo", field: "kcal_max" });
-
-        if (constraints.protein_min < 0) errors.push({ path: ["protein_min"], message: "Valor não pode ser negativo", field: "protein_min" });
-        if (constraints.protein_max < constraints.protein_min) errors.push({ path: ["protein_max"], message: "Máximo deve ser maior que mínimo", field: "protein_max" });
-
-        if (constraints.volume_max <= 0) errors.push({ path: ["volume_max"], message: "Volume deve ser maior que zero", field: "volume_max" });
-
-        if (constraints.max_bags && constraints.max_bags < 1) errors.push({ path: ["max_bags"], message: "Mínimo 1 bolsa", field: "max_bags" });
-
+    const validate = useCallback((constraints: OptimizationConstraints) => {
+        const errors = validateConstraints(constraints);
         setValidationErrors(errors);
         return errors.length === 0;
-    };
+    }, []);
 
     const optimize = useCallback((
         constraints: OptimizationConstraints,
@@ -78,11 +83,12 @@ export function useOptimizer(formulas: Formula[]) {
                 constraints_met: {},
             } as any;
         }
-    }, [formulas]);
+    }, [formulas, validate]);
 
     return {
         optimize,
         isOptimizing,
         validationErrors,
+        validate,
     };
 }
