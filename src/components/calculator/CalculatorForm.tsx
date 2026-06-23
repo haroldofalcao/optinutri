@@ -195,7 +195,13 @@ export function CalculatorForm({
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label className="text-xs uppercase text-muted-foreground font-bold tracking-wide">Calorias (kcal)</Label>
+                                    <div className="flex items-center justify-between">
+                                        <Label className="text-xs uppercase text-muted-foreground font-bold tracking-wide">Calorias (kcal)</Label>
+                                        <Tooltip>
+                                            <TooltipTrigger className="cursor-help text-muted-foreground text-[10px] border rounded-full w-4 h-4 flex items-center justify-center">?</TooltipTrigger>
+                                            <TooltipContent>ASPEN/BRASPEN: 25–30 kcal/kg/dia — ajustar pelo peso e fase clínica do paciente</TooltipContent>
+                                        </Tooltip>
+                                    </div>
                                     <div className="flex items-center gap-2">
                                         <Input
                                             type="number"
@@ -216,7 +222,13 @@ export function CalculatorForm({
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label className="text-xs uppercase text-muted-foreground font-bold tracking-wide">Proteína (g)</Label>
+                                    <div className="flex items-center justify-between">
+                                        <Label className="text-xs uppercase text-muted-foreground font-bold tracking-wide">Proteína (g)</Label>
+                                        <Tooltip>
+                                            <TooltipTrigger className="cursor-help text-muted-foreground text-[10px] border rounded-full w-4 h-4 flex items-center justify-center">?</TooltipTrigger>
+                                            <TooltipContent>ASPEN/BRASPEN: 1.2–2.0 g/kg/dia em paciente crítico — ajustar pela função renal</TooltipContent>
+                                        </Tooltip>
+                                    </div>
                                     <div className="flex items-center gap-2">
                                         <Input
                                             type="number"
@@ -239,7 +251,13 @@ export function CalculatorForm({
 
                             <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label className="text-xs uppercase text-muted-foreground font-bold tracking-wide">Volume Máx (mL)</Label>
+                                    <div className="flex items-center justify-between">
+                                        <Label className="text-xs uppercase text-muted-foreground font-bold tracking-wide">Volume Máx (mL)</Label>
+                                        <Tooltip>
+                                            <TooltipTrigger className="cursor-help text-muted-foreground text-[10px] border rounded-full w-4 h-4 flex items-center justify-center">?</TooltipTrigger>
+                                            <TooltipContent>Volume total da prescrição — considerar restrição hídrica do paciente</TooltipContent>
+                                        </Tooltip>
+                                    </div>
                                     <Input
                                         type="number"
                                         value={constraints.volume_max}
