@@ -9,7 +9,7 @@ export interface Formula {
     glucose_g_l: number;
     fat_g_l: number;
     emulsion_type: "Soja" | "TCM/TCL" | "SMOF" | "Oliva/TCL" | "Sem lipídio" | "Enteral" | string;
-    via: "Central" | "Peripheral" | "Enteral";
+    via: "Central" | "Peripheral" | "Enteral" | "Parenteral";
     base_cost: number;
     current_cost?: number;
     osmolarity?: number;

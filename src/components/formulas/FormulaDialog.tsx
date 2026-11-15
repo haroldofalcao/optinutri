@@ -39,7 +39,7 @@ const formulaSchema = z.object({
     glucose_g_l: z.coerce.number().min(0, "Glicose deve ser maior ou igual a 0"),
     fat_g_l: z.coerce.number().min(0, "Gordura deve ser maior ou igual a 0"),
     emulsion_type: z.string().min(1, "Tipo de emulsão é obrigatório"),
-    via: z.enum(["Central", "Peripheral", "Enteral"]),
+    via: z.enum(["Central", "Peripheral", "Enteral", "Parenteral"]),
     base_cost: z.coerce.number().positive("Custo deve ser positivo"),
     osmolarity: z.coerce.number().min(0, "Osmolaridade deve ser maior ou igual a 0").default(0),
 });
@@ -293,6 +293,7 @@ export function FormulaDialog({
                                                 <SelectItem value="Enteral">Enteral</SelectItem>
                                                 <SelectItem value="Central">Central</SelectItem>
                                                 <SelectItem value="Peripheral">Periférica</SelectItem>
+                                                <SelectItem value="Parenteral">Parenteral (componente)</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />

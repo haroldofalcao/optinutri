@@ -318,6 +318,7 @@ export default function FormulasManager() {
                                     <SelectItem value="Central">Central</SelectItem>
                                     <SelectItem value="Peripheral">Periférica</SelectItem>
                                     <SelectItem value="Enteral">Enteral</SelectItem>
+                                    <SelectItem value="Parenteral">Parenteral (componente)</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>

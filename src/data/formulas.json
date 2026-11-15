@@ -1354,8 +1354,8 @@
       "nitrogen_g_l": 5.12,
       "glucose_g_l": 77.9,
       "fat_g_l": 28,
-      "emulsion_type": "Enteral",
-      "via": "Enteral",
+      "emulsion_type": "SMOF",
+      "via": "Peripheral",
       "base_cost": 270
     },
     {
@@ -1368,8 +1368,8 @@
       "nitrogen_g_l": 5.12,
       "glucose_g_l": 77.9,
       "fat_g_l": 28,
-      "emulsion_type": "Enteral",
-      "via": "Enteral",
+      "emulsion_type": "SMOF",
+      "via": "Peripheral",
       "base_cost": 540
     },
     {

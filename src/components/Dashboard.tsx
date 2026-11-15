@@ -22,7 +22,7 @@ export default function Dashboard() {
             title: "Total de Fórmulas",
             value: formulas.length,
             icon: FlaskConical,
-            description: "Disponíveis no banco",
+            description: `Inclui ${formulas.filter((f) => f.via === "Parenteral").length} componentes parenterais isolados`,
             color: "text-primary",
             bg: "bg-primary/10",
         },
