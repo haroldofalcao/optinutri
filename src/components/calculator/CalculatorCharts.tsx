@@ -24,7 +24,7 @@ export function CalculatorCharts({ result, constraints }: CalculatorChartsProps)
     if (result.status !== "Optimal") return null;
 
     const costData = result.selected_bags.map((bag) => ({
-        name: bag.name.split(" ")[0], // Simplify name for chart
+        name: bag.name,
         cost: bag.total_cost,
         fullName: bag.name
     }));
@@ -149,7 +149,7 @@ export function CalculatorCharts({ result, constraints }: CalculatorChartsProps)
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={costData} margin={{ top: 20, right: 10, left: 10, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" opacity={0.5} />
-                            <XAxis dataKey="name" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                            <XAxis dataKey="name" interval={0} angle={-20} textAnchor="end" height={80} stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                             <YAxis stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `R$${value}`} />
                             <RechartsTooltip content={<CustomCostTooltip />} cursor={{ fill: 'var(--muted)', opacity: 0.2 }} />
                             <Bar

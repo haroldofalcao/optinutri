@@ -2,6 +2,13 @@
 
 Decisões e aprendizados do projeto. Mais recente no topo.
 
+## 2026-11-15 — Tela de resultado (passos 3 e 4 da auditoria)
+
+- O campo `max_bags` do motor limita **tipos de fórmula**, não bolsas (`optimizer.ts:101-103`). Na interface passou a se chamar "Máx. de tipos de fórmula"; o nome interno `max_bags` foi mantido (renomear exige mexer no motor, nos testes e no histórico). O padrão (5) não mudou: decisão do Haroldo, "livre, à escolha do usuário".
+- Resultado: cartão "Tipos de Fórmula" no lugar de "Total de Bolsas"; cada linha mostra o volume em mL e "equivale a N bolsa(s)" em segundo plano (a quantidade de bolsas é só volume ÷ tamanho da bolsa, `optimizer.ts:234`).
+- Gráfico de composição: cada linha em % da meta máxima, para a faixa de proteína (60–90 g) aparecer; o balão mostra os valores reais.
+- Fora do escopo, ainda dizem "bolsas": `OptimizationHistory.tsx` (coluna "Bolsas", "N un") e `useOptimizer.ts` ("Mínimo 1 bolsa").
+
 ## 2026-11-14 — Vias das fórmulas e mistura NE + NPT
 
 **Decisões do Haroldo**

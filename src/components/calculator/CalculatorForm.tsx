@@ -248,10 +248,10 @@ export function CalculatorForm({
 
                                 <div className="space-y-2">
                                     <div className="flex items-center justify-between">
-                                        <Label className="text-xs uppercase text-muted-foreground font-bold tracking-wide">Mix Máximo de Fórmulas</Label>
+                                        <Label className="text-xs uppercase text-muted-foreground font-bold tracking-wide">Máx. de tipos de fórmula</Label>
                                         <Tooltip>
                                             <TooltipTrigger className="cursor-help text-muted-foreground text-[10px] border rounded-full w-4 h-4 flex items-center justify-center">?</TooltipTrigger>
-                                            <TooltipContent>Quantos tipos diferentes podem ser usados na mesma prescrição</TooltipContent>
+                                            <TooltipContent>Quantos tipos diferentes de fórmula podem ser combinados na mesma prescrição (ex.: 2 = no máximo duas fórmulas)</TooltipContent>
                                         </Tooltip>
                                     </div>
                                     <Input

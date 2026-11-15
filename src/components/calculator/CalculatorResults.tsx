@@ -72,15 +72,15 @@ export function CalculatorResults({ result, constraints }: CalculatorResultsProp
                                 <div className="absolute top-0 right-0 p-3 opacity-5">
                                     <Package className="h-12 w-12" />
                                 </div>
-                                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Total de Bolsas</p>
+                                <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Tipos de Fórmula</p>
                                 <div className="mt-2 flex items-baseline justify-center">
                                     <span className="text-4xl font-black tracking-tight text-foreground">
-                                        {result.num_bags}
+                                        {result.selected_bags.length}
                                     </span>
-                                    <span className="ml-1 text-sm text-muted-foreground font-medium">unid.</span>
+                                    <span className="ml-1 text-sm text-muted-foreground font-medium">de {constraints.max_bags}</span>
                                 </div>
                                 <p className="text-xs text-muted-foreground mt-1 bg-muted px-2 py-0.5 rounded-full">
-                                    Max: {constraints.max_bags}
+                                    Limite: {constraints.max_bags} tipos
                                 </p>
                             </div>
                         </div>
@@ -116,8 +116,8 @@ export function CalculatorResults({ result, constraints }: CalculatorResultsProp
                                         className="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-muted/20 transition-colors gap-3 sm:gap-0"
                                     >
                                         <div className="flex items-start gap-3">
-                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold text-sm border border-primary/20">
-                                                {bag.quantity}
+                                            <div className="flex h-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold text-xs px-2 border border-primary/20">
+                                                {bag.volume_contribution} mL
                                             </div>
                                             <div>
                                                 <p className="text-sm font-bold leading-none mb-1">{bag.name}</p>
@@ -125,7 +125,7 @@ export function CalculatorResults({ result, constraints }: CalculatorResultsProp
                                                     <Badge variant="secondary" className="text-[10px] h-4 px-1 rounded-sm font-normal">
                                                         {bag.via}
                                                     </Badge>
-                                                    <span className="text-xs text-muted-foreground">Vol: {bag.volume_contribution} mL</span>
+                                                    <span className="text-xs text-muted-foreground">equivale a {bag.quantity} bolsa(s)</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -147,7 +147,7 @@ export function CalculatorResults({ result, constraints }: CalculatorResultsProp
                             <div className="space-y-1">
                                 <p className="font-bold text-lg text-destructive">Otimização Impossível</p>
                                 <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-                                    Não foi possível encontrar uma combinação dentro da restrição de <span className="font-mono font-bold text-foreground">Max {constraints.max_bags} bolsas</span>.
+                                    Não foi possível encontrar uma combinação dentro do limite de <span className="font-mono font-bold text-foreground">{constraints.max_bags} tipos de fórmula</span>.
                                 </p>
                             </div>
                         </div>
