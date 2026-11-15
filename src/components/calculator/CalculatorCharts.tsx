@@ -29,31 +29,36 @@ export function CalculatorCharts({ result, constraints }: CalculatorChartsProps)
         fullName: bag.name
     }));
 
+    // Each row is drawn as % of its own maximum, so kcal, protein and volume share one readable axis.
+    const toPct = (value: number, max: number) => (max > 0 ? (value / max) * 100 : 0);
+
     const rangeChartData = [
         {
             name: "Calorias (kcal)",
             achieved: result.total_kcal,
             min: constraints.kcal_min,
             max: constraints.kcal_max,
-            // Hack for creating a background bar range
-            rangeStart: constraints.kcal_min,
-            rangeSize: constraints.kcal_max - constraints.kcal_min
+            achievedPct: toPct(result.total_kcal, constraints.kcal_max),
+            rangeStart: toPct(constraints.kcal_min, constraints.kcal_max),
+            rangeSize: 100 - toPct(constraints.kcal_min, constraints.kcal_max)
         },
         {
             name: "Proteína (g)",
             achieved: result.total_protein,
             min: constraints.protein_min,
             max: constraints.protein_max,
-            rangeStart: constraints.protein_min,
-            rangeSize: constraints.protein_max - constraints.protein_min
+            achievedPct: toPct(result.total_protein, constraints.protein_max),
+            rangeStart: toPct(constraints.protein_min, constraints.protein_max),
+            rangeSize: 100 - toPct(constraints.protein_min, constraints.protein_max)
         },
         {
             name: "Volume (mL)",
             achieved: result.total_volume,
             min: 0,
             max: constraints.volume_max,
+            achievedPct: toPct(result.total_volume, constraints.volume_max),
             rangeStart: 0,
-            rangeSize: constraints.volume_max
+            rangeSize: 100
         },
     ];
 
@@ -78,7 +83,7 @@ export function CalculatorCharts({ result, constraints }: CalculatorChartsProps)
                 <CardHeader>
                     <CardTitle className="text-lg">Composição Nutricional</CardTitle>
                     <CardDescription>
-                        Comparativo: Alvo (Barra) vs Atingido (Ponto)
+                        Alvo (barra) vs atingido (ponto), em % da meta máxima
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -89,7 +94,7 @@ export function CalculatorCharts({ result, constraints }: CalculatorChartsProps)
                             margin={{ top: 20, right: 30, left: 40, bottom: 5 }}
                         >
                             <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--border)" opacity={0.5} />
-                            <XAxis type="number" stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                            <XAxis type="number" domain={[0, 110]} ticks={[0, 25, 50, 75, 100]} tickFormatter={(v) => `${v}%`} stroke="var(--muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                             <YAxis dataKey="name" type="category" width={100} stroke="var(--foreground)" fontSize={12} tickLine={false} axisLine={false} />
                             <RechartsTooltip
                                 cursor={{ fill: 'transparent' }}
@@ -129,7 +134,7 @@ export function CalculatorCharts({ result, constraints }: CalculatorChartsProps)
                             <Bar dataKey="rangeStart" stackId="a" fill="transparent" barSize={12} isAnimationActive={false} />
                             <Bar dataKey="rangeSize" stackId="a" fill="var(--primary)" opacity={0.2} barSize={12} radius={[0, 4, 4, 0]} />
 
-                            <Scatter name="Atingido" dataKey="achieved" fill="var(--primary)" shape="circle" strokeWidth={2} stroke="var(--background)" />
+                            <Scatter name="Atingido" dataKey="achievedPct" fill="var(--primary)" shape="circle" strokeWidth={2} stroke="var(--background)" />
                         </ComposedChart>
                     </ResponsiveContainer>
                 </CardContent>
