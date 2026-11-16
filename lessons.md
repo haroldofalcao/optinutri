@@ -2,6 +2,19 @@
 
 Decisões e aprendizados do projeto. Mais recente no topo.
 
+## 2026-11-16 — Guia atualizado (enteral + parenteral, custos, sem PDF)
+
+- O Guia dizia "Nutrição Parenteral" e prometia exportar o resultado em Excel/PDF (não existe; é a Fase 4). Também citava "custos personalizados nas opções avançadas" (não há tela) e um botão com nome errado. Tudo corrigido em `Guide.tsx`, com FAQ novo sobre combinar enteral e parenteral e duas entradas novas no glossário.
+- **Ajuste de custo já existe:** página Fórmulas → lápis → "Custo Base (R$)" grava um override no `localStorage` (`optinutri_user_formulas`) e a calculadora usa o valor novo. Testado: Nutrison Energy 1000 mL de R$ 60 para R$ 30 → custo diário de R$ 72,00 para R$ 36,00. Limitação: vale só naquele navegador/computador até a Fase 5 (Firestore).
+- Decisão do Haroldo: **opção A** (só explicar no Guia o que já existe). Um campo rápido de custo dentro da calculadora (opção B) ficou como possibilidade: o motor já aceita `customCosts`, mas `useOptimizer.ts:69` passa `undefined`.
+- **Pendência clínica:** o motor **não dá prioridade à nutrição enteral** (regra 1 do projeto não está no código). O Guia avisa para usar o julgamento clínico. Decidir se isso vira regra do motor ou só aviso.
+
+## 2026-11-15 — Prioridade de dispositivo: computador primeiro
+
+- **Decisão do Haroldo:** tablets não são usados à beira do leito na maioria dos hospitais brasileiros, e o cálculo é uma tarefa fina, feita **diante de um computador**, não de um celular. Portanto o OptiNutri é **desktop-first**.
+- Consequência: a auditoria de tablet e celular (tabela de Fórmulas cortada a 768 px, botões cortados a 390 px; causas em `FormulasManager.tsx` linhas 250, 335 e 372) fica **adiada**, sem prazo. O roadmap, que cita o tablet como dispositivo clínico principal, precisa ser revisto.
+- O layout de cartões para celular já existente (commit `bea9bea`) permanece como está.
+
 ## 2026-11-15 — Tela de resultado (passos 3 e 4 da auditoria)
 
 - O campo `max_bags` do motor limita **tipos de fórmula**, não bolsas (`optimizer.ts:101-103`). Na interface passou a se chamar "Máx. de tipos de fórmula"; o nome interno `max_bags` foi mantido (renomear exige mexer no motor, nos testes e no histórico). O padrão (5) não mudou: decisão do Haroldo, "livre, à escolha do usuário".

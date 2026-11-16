@@ -17,7 +17,7 @@ export default function Guide() {
             <div>
                 <h1 className="text-3xl font-bold">Guia do Usuário</h1>
                 <p className="text-muted-foreground mt-1">
-                    Aprenda a usar o Otimizador de Nutrição Parenteral de forma eficaz
+                    Aprenda a usar o Otimizador de Terapia Nutricional de forma eficaz
                 </p>
             </div>
 
@@ -34,9 +34,10 @@ export default function Guide() {
                     <div className="space-y-2">
                         <h3 className="font-semibold">O que é esta ferramenta?</h3>
                         <p className="text-sm text-muted-foreground">
-                            O Otimizador de Nutrição Parenteral é uma ferramenta profissional que usa algoritmos
-                            avançados de otimização para encontrar a combinação mais econômica de fórmulas de nutrição
-                            parenteral enquanto atende todos os requisitos nutricionais. Foi projetado para profissionais
+                            O OptiNutri é uma ferramenta de apoio à decisão que usa programação linear para encontrar
+                            a combinação de menor custo de fórmulas de nutrição enteral e parenteral que atenda às metas
+                            nutricionais do paciente. É possível combinar fórmulas de vias diferentes (por exemplo,
+                            enteral com um complemento parenteral) na mesma prescrição. Foi projetado para profissionais
                             de saúde, farmacêuticos e nutricionistas.
                         </p>
                     </div>
@@ -46,7 +47,8 @@ export default function Guide() {
                         <ul className="space-y-1 text-sm text-muted-foreground list-disc list-inside">
                             <li>Minimize custos enquanto atende todas as restrições nutricionais</li>
                             <li>Comparação rápida de múltiplas combinações de fórmulas</li>
-                            <li>Suporte para custos personalizados e opções de filtragem</li>
+                            <li>Custos ajustáveis por fórmula, cadastro de fórmulas próprias e filtros por fabricante e via</li>
+                            <li>Combinação de fórmulas enterais e parenterais, com limite de tipos de fórmula definido por você</li>
                             <li>Importação/exportação em Excel para fácil gerenciamento de dados</li>
                             <li>Análise visual dos resultados com gráficos</li>
                         </ul>
@@ -86,7 +88,7 @@ export default function Guide() {
                                 <h3 className="font-semibold">Defina as Restrições</h3>
                                 <p className="text-sm text-muted-foreground">
                                     Vá para a página da Calculadora e insira os requisitos nutricionais do paciente:
-                                    calorias mínimas/máximas, proteína e limites de volume.
+                                    calorias mínimas/máximas, proteína, volume máximo e o máximo de tipos de fórmula.
                                 </p>
                             </div>
                         </div>
@@ -98,7 +100,7 @@ export default function Guide() {
                             <div className="space-y-1">
                                 <h3 className="font-semibold">Execute a Otimização</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Clique no botão "Otimizar Combinação de Fórmulas" para executar o algoritmo de otimização.
+                                    Clique em "Calcular Otimização" para executar o algoritmo de otimização.
                                     O sistema encontrará a melhor combinação em segundos.
                                 </p>
                             </div>
@@ -122,9 +124,10 @@ export default function Guide() {
                                 5
                             </div>
                             <div className="space-y-1">
-                                <h3 className="font-semibold">Exporte e Compartilhe</h3>
+                                <h3 className="font-semibold">Consulte o Histórico</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Exporte os resultados para Excel ou PDF para documentação e compartilhamento com sua equipe.
+                                    Os cálculos recentes ficam listados em "Histórico de Otimizações", abaixo da calculadora.
+                                    A exportação do resultado em PDF e Excel está prevista para uma próxima versão.
                                 </p>
                             </div>
                         </div>
@@ -162,8 +165,9 @@ export default function Guide() {
                         <AccordionItem value="item-3">
                             <AccordionTrigger>Posso personalizar os custos das fórmulas?</AccordionTrigger>
                             <AccordionContent>
-                                Sim! Você pode definir custos personalizados para fórmulas individuais para refletir os
-                                preços reais da sua instituição ou taxas contratuais. Isso está disponível nas opções avançadas.
+                                Sim. Na página Fórmulas, clique no lápis da fórmula e altere o "Custo Base (R$)" para refletir
+                                os preços da sua instituição ou do seu contrato. A calculadora passa a usar o novo valor. Os
+                                ajustes ficam salvos neste navegador e neste computador; limpar os dados do navegador os apaga.
                             </AccordionContent>
                         </AccordionItem>
 
@@ -179,9 +183,19 @@ export default function Guide() {
                         <AccordionItem value="item-5">
                             <AccordionTrigger>Como importo fórmulas do Excel?</AccordionTrigger>
                             <AccordionContent>
-                                Na página de Fórmulas, clique em "Importar Excel e selecione seu arquivo. O sistema suporta
+                                Na página de Fórmulas, clique em "Importar Excel" e selecione seu arquivo. O sistema suporta
                                 formatos padrão do Excel (.xlsx, .xls) com colunas para nome, volume, calorias, proteína
                                 e outras propriedades das fórmulas.
+                            </AccordionContent>
+                        </AccordionItem>
+
+                        <AccordionItem value="item-6">
+                            <AccordionTrigger>Posso combinar nutrição enteral e parenteral?</AccordionTrigger>
+                            <AccordionContent>
+                                Sim. Selecione fórmulas de vias diferentes e defina, em "Máx. de tipos de fórmula", quantas
+                                podem entrar na prescrição (ex.: 2). O sistema mostra a combinação de menor custo entre as
+                                fórmulas selecionadas; ele não escolhe a via por você. Quando o trato digestivo é funcional,
+                                a nutrição enteral tem prioridade: use o julgamento clínico e o protocolo da sua instituição.
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
@@ -192,7 +206,7 @@ export default function Guide() {
             <Card>
                 <CardHeader>
                     <CardTitle>Glossário</CardTitle>
-                    <CardDescription>Termos comuns usados em nutrição parenteral</CardDescription>
+                    <CardDescription>Termos comuns usados em terapia nutricional</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
@@ -202,7 +216,7 @@ export default function Guide() {
                                 <span className="font-semibold">Quilocalorias</span>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Unidade de energia fornecida pela fórmula de nutrição parenteral.
+                                Unidade de energia fornecida pela fórmula nutricional.
                             </p>
                         </div>
 
@@ -233,6 +247,26 @@ export default function Guide() {
                             </div>
                             <p className="text-sm text-muted-foreground">
                                 Administração via veia periférica, requer fórmulas de menor osmolaridade.
+                            </p>
+                        </div>
+
+                        <div>
+                            <div className="flex items-center gap-2 mb-1">
+                                <Badge variant="outline">Enteral</Badge>
+                                <span className="font-semibold">Via Digestiva</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Via digestiva (oral ou sonda). Fórmulas enterais nunca são administradas por via venosa.
+                            </p>
+                        </div>
+
+                        <div>
+                            <div className="flex items-center gap-2 mb-1">
+                                <Badge variant="outline">Parenteral (componente)</Badge>
+                                <span className="font-semibold">Lipídios ou Aminoácidos Isolados</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                                Bolsas isoladas de lipídios ou aminoácidos, usadas para complementar outra fórmula.
                             </p>
                         </div>
                     </div>
