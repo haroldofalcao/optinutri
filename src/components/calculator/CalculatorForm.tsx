@@ -129,7 +129,7 @@ export function CalculatorForm({
                                                     <div className="flex items-center justify-between">
                                                         <label
                                                             htmlFor={formula.id}
-                                                            className="text-sm font-semibold leading-none cursor-pointer hover:text-primary transition-colors line-clamp-1"
+                                                            className="text-sm font-semibold leading-tight cursor-pointer hover:text-primary transition-colors line-clamp-2"
                                                             title={formula.name}
                                                         >
                                                             {formula.name}
