@@ -74,7 +74,7 @@ OptimizationResult      → status ("Optimal"|"Infeasible"|"Error"),
 ## Regras inegociáveis
 
 ### Clínicas
-1. **Enteral tem prioridade** sobre parenteral quando o trato digestivo é funcional.
+1. **A prioridade entre as vias é livre**, escolhida pelo prescritor. O motor não impõe ordem entre enteral e parenteral.
 2. **Nunca misturar vias** — fórmula enteral jamais pode ser sugerida para uso intravenoso.
 3. **Restrições são hard constraints** — qualquer violação retorna `"Infeasible"`, nunca `"Optimal"`.
 
