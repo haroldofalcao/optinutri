@@ -194,8 +194,9 @@ export default function Guide() {
                             <AccordionContent>
                                 Sim. Selecione fórmulas de vias diferentes e defina, em "Máx. de tipos de fórmula", quantas
                                 podem entrar na prescrição (ex.: 2). O sistema mostra a combinação de menor custo entre as
-                                fórmulas selecionadas; ele não escolhe a via por você. Quando o trato digestivo é funcional,
-                                a nutrição enteral tem prioridade: use o julgamento clínico e o protocolo da sua instituição.
+                                fórmulas selecionadas; ele não escolhe a via por você. A prioridade entre as vias é do
+                                prescritor: selecione só as fórmulas que deseja considerar e use o alfinete para tornar uma
+                                fórmula obrigatória. Use o julgamento clínico e o protocolo da sua instituição.
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>

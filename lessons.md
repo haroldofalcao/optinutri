@@ -2,6 +2,13 @@
 
 Decisões e aprendizados do projeto. Mais recente no topo.
 
+## 2026-11-16 — Prioridade entre vias: livre, do prescritor
+
+- **Decisão do Haroldo:** a prioridade entre nutrição enteral e parenteral é **livre, escolhida pelo prescritor**. O motor **não** terá regra de prioridade da enteral.
+- Como o prescritor exerce isso hoje: escolhe quais fórmulas entram na seleção e pode **fixar uma fórmula como obrigatória** (alfinete). O Guia (FAQ "Posso combinar nutrição enteral e parenteral?") foi ajustado para dizer isso, em vez de afirmar que a enteral "tem prioridade".
+- Isso **substitui** a pendência clínica anotada abaixo (motor sem prioridade da enteral) e a regra 1 do `CLAUDE.md` do projeto ("Enteral tem prioridade"), que fica desatualizada; a alteração do `CLAUDE.md` depende de confirmação do Haroldo.
+- Nunca misturar vias no sentido de usar fórmula enteral por via venosa continua valendo; o que muda é que combinar enteral + parenteral na mesma prescrição é permitido.
+
 ## 2026-11-16 — Guia atualizado (enteral + parenteral, custos, sem PDF)
 
 - O Guia dizia "Nutrição Parenteral" e prometia exportar o resultado em Excel/PDF (não existe; é a Fase 4). Também citava "custos personalizados nas opções avançadas" (não há tela) e um botão com nome errado. Tudo corrigido em `Guide.tsx`, com FAQ novo sobre combinar enteral e parenteral e duas entradas novas no glossário.
