@@ -2,6 +2,23 @@
 
 Decisões e aprendizados do projeto. Mais recente no topo.
 
+## PRÓXIMA SESSÃO — comece por aqui (atualizado em 2026-11-16)
+
+**Estado:** o site (https://optinutri.vercel.app) está atualizado até o commit `89eb135` (mais o commit de documentação desta preparação, se já enviado). Auditoria visual feita; correções de dados, resultado, Guia e nomes de fórmula estão no ar. Motor validado em 2026-11-12 (39/39 casos do artigo, sem erro).
+
+**Decisões vigentes:** desktop-first (tablet/celular adiados); prioridade entre vias livre (prescritor escolhe); artigo = mecanismo; base de 109 fórmulas é a completa.
+
+**Pendências, em ordem sugerida (o dono escolhe):**
+1. Acabamento de interface (todos baixos): destacar página atual na barra (`src/components/layout/Navbar.tsx`, item 1.3 do roadmap); coluna "Tipo" repetida na tabela de Fórmulas (`FormulasManager.tsx`); margens laterais desiguais entre telas; selo "Sistema Operacional v1.2" fixo no Painel (`Dashboard.tsx`).
+2. "Bolsas" ainda aparece em `OptimizationHistory.tsx` (coluna "Bolsas", "N un") e em `useOptimizer.ts` ("Mínimo 1 bolsa").
+3. Opção B de custo: campo rápido de custo na calculadora (motor já aceita `customCosts`; `useOptimizer.ts:69` passa `undefined`). Só com pedido do dono.
+4. 2 testes antigos falham em `src/tests/infeasibility.test.ts` (limite de bolsas). Revisão exige justificativa clínica (mexe com `optimizer.ts`).
+5. Tela de resultado nunca testada com Firebase real (histórico), nem o menu hambúrguer em celular real nem o modo escuro.
+6. `docs/resumo_para_agentes.md` e `AGENTS.md` (não rastreados, fora do GitHub) e `Trabalho.docx` (artigo) ficaram fora dos commits de propósito. Perguntar ao dono antes de incluí-los (o repositório é público).
+7. `DEPLOY.md` está desatualizado (diz que não há Firebase/login).
+
+**Como trabalhar aqui (resumo):** plano com linhas exatas e aprovação antes de editar; um passo por vez; build + teste em navegador de verdade; commit com mensagem em arquivo sem BOM; listar dados sensíveis e esperar OK antes de `git push`. Receita de teste local sem Firebase: ver `CLAUDE.md`, seção "Desenvolvimento local".
+
 ## 2026-11-16 — Prioridade entre vias: livre, do prescritor
 
 - **Decisão do Haroldo:** a prioridade entre nutrição enteral e parenteral é **livre, escolhida pelo prescritor**. O motor **não** terá regra de prioridade da enteral.
